@@ -2,10 +2,11 @@
 
 import Web3 from 'web3';
 import memoize from 'memoizee';
+import WEB3_CONSTANTS from 'constants/Web3';
 import multicall_abi from '../constants/abis/multicall.json';
 import { getArrayChunks, flattenArray } from './Array';
 
-const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`);
+const web3 = new Web3(WEB3_CONSTANTS.RPC_URL);
 
 // Contract instances cache store
 const getContractInstance = memoize((address, abi, library) => (

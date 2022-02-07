@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import BigNumber from 'big-number';
+import WEB3_CONSTANTS from 'constants/Web3';
 import { IS_DEV } from 'constants/AppConstants';
 
 import { fn } from '../../utils/api';
@@ -9,18 +10,28 @@ import multicallAbi from '../../constants/abis/multicall.json';
 import erc20Abi from '../../constants/abis/erc20.json';
 import factorypool3Abi from '../../constants/abis/factory_swap.json';
 
-const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`);
+const web3 = new Web3(WEB3_CONSTANTS.RPC_URL);
 const BASE_API_DOMAIN = IS_DEV ? 'http://localhost:3000' : 'https://api.curve.fi';
 
 export default fn(async (query) => {
-    const version = query.version === '2' ? 2 : 1;
+    const version = (
+      query.version === 'crypto' ? 'crypto' :
+      Number(query.version) === 2 ? 2 :
+      1
+    );
 
     let registryAddress = await getFactoryRegistry()
     let multicallAddress = await getMultiCall()
   	let registry = new web3.eth.Contract(registryAbi, registryAddress);
   	let multicall = new web3.eth.Contract(multicallAbi, multicallAddress)
 
-    let res = await (await fetch(`${BASE_API_DOMAIN}/api/${version === 1 ? 'getFactoryPools' : 'getFactoryV2Pools'}`)).json()
+    const factoryPoolsApiEndpoint = (
+      version === 1 ? 'getFactoryPools' :
+      version === 2 ? 'getFactoryV2Pools' :
+      version === 'crypto' ? 'getFactoryCryptoPools/ethereum' :
+      undefined
+    );
+    let res = await (await fetch(`${BASE_API_DOMAIN}/api/${factoryPoolsApiEndpoint}`)).json()
 
     let poolDetails = [];
     let totalVolume = 0
@@ -89,6 +100,46 @@ export default fn(async (query) => {
               //   console.log('$',t, trade.transactionHash)
               // }
             })
+
+            if (pool.address.toLowerCase() === '0x8461a004b50d321cb22b7d034969ce6803911899') {
+              volume  = 0
+            }
+            if (pool.address.toLowerCase() === '0x8818a9bb44Fbf33502bE7c15c500d0C783B73067') {
+              volume  = 0
+            }
+          }
+
+          // Crypto facto pools don't seem to emit named events, so instead we're
+          // fetching all events and filtering by topic, and decoding data manually
+          if (version === 'crypto') {
+            let events3 = await poolContract.getPastEvents('allEvents', {
+                filter: {},
+                topics: ['0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98'],
+                fromBlock: latest - DAY_BLOCKS,
+                toBlock: 'latest'
+            })
+            events3.map(async (trade) => {
+              const {
+                bought_id: boughtId,
+                tokens_bought: tokensBought,
+              } = web3.eth.abi.decodeLog(
+                [{"name":"sold_id","type":"uint256","indexed":false},{"name":"tokens_sold","type":"uint256","indexed":false},{"name":"bought_id","type":"uint256","indexed":false},{"name":"tokens_bought","type":"uint256","indexed":false}],
+                trade.raw.data,
+                ['0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98']
+              );
+
+              const coinBought = pool.coins[boughtId];
+              const amountBought = tokensBought / (10 ** coinBought.decimals);
+              const tradeUsdValue = amountBought * coinBought.usdPrice;
+              volume += tradeUsdValue;
+            })
+
+            if (pool.address.toLowerCase() === '0x8461a004b50d321cb22b7d034969ce6803911899') {
+              volume  = 0
+            }
+            if (pool.address.toLowerCase() === '0x8818a9bb44Fbf33502bE7c15c500d0C783B73067') {
+              volume  = 0
+            }
           }
 
 
@@ -102,7 +153,8 @@ export default fn(async (query) => {
 
           let vPrice = vPriceOldFetch
           let vPriceNew = vPriceFetch
-          let apy = (vPriceNew - vPrice) / vPrice * 100 * 365
+          const rate = (vPriceNew - vPrice) / vPrice;
+          const apy = (((1 + rate) ** 365) - 1) * 100;
           let apyFormatted = `${apy.toFixed(2)}%`
           totalVolume += volume
           let p = {

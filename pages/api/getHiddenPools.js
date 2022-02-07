@@ -5,14 +5,21 @@ const HIDDEN_POOLS_IDS = {
     'factory-v2-0', // non pegged andre boo boo
     'factory-v2-4', // scrv doesnt exist
     'factory-v2-6', // old cvxcrv pool
+    'factory-v2-8', // by team request
     'factory-v2-36', //by team request
     'factory-v2-15', //ruler dead
     'factory-v2-17', //ruler dead
     'factory-v2-18', //ruler dead
     'factory-v2-19', //ruler dead
     'factory-v2-26', //never seeded
+    'factory-v2-39', //broken non pegged
+    'factory-v2-40', //broken non pegged
     'factory-v2-46', //non pegged
     'factory-v2-54', //duplicate
+    'factory-v2-65', //non pegged
+    'factory-crypto-0', //price borked
+    'factory-crypto-1', //price borked
+    'factory-crypto-2', //price borked
   ],
   fantom: [
     'factory-v2-2', // Exact duplicate of another facto pool, with 0 liquidity
@@ -24,7 +31,7 @@ const HIDDEN_POOLS_IDS = {
     'factory-v2-3', //non pegged pool
     'factory-v2-5', //empty non pegged pool?
     'factory-v2-6', //empty non pegged pool?
-
+    'factory-v2-25', //wrong implementation
   ],
   polygon: [
     'factory-v2-0', // Test pools not meant to be useful
@@ -35,7 +42,17 @@ const HIDDEN_POOLS_IDS = {
     'factory-v2-8', // non pegged
     'factory-v2-13', // non pegged
     'factory-v2-35', // by request (charlie)
+    'factory-v2-94', // duplicate and empty
+    'factory-v2-95', // duplicate and empty
+    'factory-v2-96', // duplicate and empty
+    'factory-v2-97', // duplicate and empty
+    'factory-v2-98', // duplicate and empty
+    'factory-v2-99', // duplicate and empty
+    'factory-v2-106', // duplicate and empty
   ],
+  avalanche: [
+    'factory-v2-42', //empty/borked
+  ]
 };
 
 export default fn(async () => HIDDEN_POOLS_IDS);

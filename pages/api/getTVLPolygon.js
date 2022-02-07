@@ -9,7 +9,7 @@ import multicallAbi from '../../constants/abis/multicall.json';
 import erc20Abi from '../../constants/abis/erc20.json';
 import aavePool from '../../constants/abis/pools/aave.json';
 
-const web3 = new Web3(`https://rpc-mainnet.maticvigil.com/`);
+const web3 = new Web3(`https://polygon-rpc.com/`);
 
 
 export default fn(async () => {
@@ -40,6 +40,17 @@ export default fn(async () => {
         'lpPrice': 0,
         'type': 'crypto',
         'token': '0x8096ac61db23291252574D49f036f0f9ed8ab390'
+      },
+      'atricrypto3': {
+        'address': '0x92215849c439E1f8612b6646060B4E3E5ef822cC',
+        'tvl': 0,
+        'coins': 3,
+        'keys': ['tether', 'bitcoin', 'ethereum'],
+        'decimals': [18, 8, 18],
+        'tvl': 0,
+        'lpPrice': 0,
+        'type': 'crypto',
+        'token': '0xdAD97F7713Ae9437fa9249920eC8507e5FbB23d3'
       },
       'eurtusd': {
         'address': '0xB446BF7b8D6D4276d0c75eC0e3ee8dD7Fe15783A',

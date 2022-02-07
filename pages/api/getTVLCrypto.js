@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Web3 from 'web3';
 import BigNumber from 'big-number';
+import WEB3_CONSTANTS from 'constants/Web3';
 
 import { fn } from '../../utils/api';
 import { getRegistry, getMultiCall } from '../../utils/getters';
@@ -9,7 +10,7 @@ import multicallAbi from '../../constants/abis/multicall.json';
 import erc20Abi from '../../constants/abis/erc20.json';
 import cryptoPoolAbi from '../../constants/abis/crypto_pool.json';
 
-const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`);
+const web3 = new Web3(WEB3_CONSTANTS.RPC_URL);
 
 
 export default fn(async () => {
@@ -50,10 +51,55 @@ export default fn(async () => {
         'decimals': [6, 2],
         'tvl': 0,
         'lpPrice': 0
-      }
+      },
+      'crveth': {
+        'address': '0x8301AE4fc9c624d1D396cbDAa1ed877821D7C511',
+        'token': '0xEd4064f376cB8d68F770FB1Ff088a3d0F3FF5c4d',
+        'coins': 2,
+        'keys': ['ethereum', 'curve-dao-token'],
+        'decimals': [18, 18],
+        'tvl': 0,
+        'lpPrice': 0
+      },
+      'cvxeth': {
+        'address': '0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4',
+        'token': '0x3A283D9c08E8b55966afb64C515f5143cf907611',
+        'coins': 2,
+        'keys': ['ethereum', 'convex-finance'],
+        'decimals': [18, 18],
+        'tvl': 0,
+        'lpPrice': 0
+      },
+      'xautusd': {
+        'address': '0xAdCFcf9894335dC340f6Cd182aFA45999F45Fc44',
+        'token': '0x8484673cA7BfF40F82B041916881aeA15ee84834',
+        'coins': 2,
+        'keys': ['tether-gold', 'tether'],
+        'decimals': [6, 18],
+        'tvl': 0,
+        'lpPrice': 0
+      },
+      'spelleth': {
+        'address': '0x98638FAcf9a3865cd033F36548713183f6996122',
+        'token': '0x8282BD15dcA2EA2bDf24163E8f2781B30C43A2ef',
+        'coins': 2,
+        'keys': ['ethereum', 'spell-token'],
+        'decimals': [18, 18],
+        'tvl': 0,
+        'lpPrice': 0
+      },
+      'teth': {
+        'address': '0x752eBeb79963cf0732E9c0fec72a49FD1DEfAEAC',
+        'token': '0xCb08717451aaE9EF950a2524E33B6DCaBA60147B',
+        'coins': 2,
+        'keys': ['ethereum', 'threshold-network-token'],
+        'decimals': [18, 18],
+        'tvl': 0,
+        'lpPrice': 0
+      },
     }
 
-    let price_feed = await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether,ethereum,bitcoin,tether-eurt,stasis-eurs&vs_currencies=usd')).json()
+    let price_feed = await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether,ethereum,bitcoin,tether-eurt,stasis-eurs,curve-dao-token,convex-finance,tether-gold,spell-token,threshold-network-token&vs_currencies=usd')).json()
 
     for (const [key, pool] of Object.entries(cryptoPools)) {
       let poolContract = new web3.eth.Contract(cryptoPoolAbi, pool.address);

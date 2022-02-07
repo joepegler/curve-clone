@@ -62,15 +62,16 @@ const GAUGES_PARTIAL_ABI = [{"name":"reward_contract","outputs":[{"type":"addres
 export default fn(async () => {
   let { gauges } = await getGauges.straightCall();
 
-
   //empty gauges cause reverts
   const remove = [
-    'arbitrum-eursusd',
-    'polygon-eurtusd',
-    'eurtusd',
-    'eursusd',
-    'f-ibbtc',
-    'f-dola'
+     'eurtusd', // Todo adapt script to this new type of gauges
+    'eursusd', // Todo adapt script to this new type of gauges
+    'crveth', // Todo adapt script to this new type of gauges
+    'cvxeth', // Todo adapt script to this new type of gauges
+    'rai',
+    'xautusd',
+    'spelleth',
+    'teth',
   ]
   remove.map(async (p) => {
     delete gauges[p]

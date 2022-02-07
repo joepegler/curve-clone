@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Web3 from 'web3';
+import WEB3_CONSTANTS from 'constants/Web3';
 import { fn } from '../../utils/api';
 import aggregatorInterfaceABI from '../../constants/abis/aggregator.json';
 import multicallAbi from '../../constants/abis/multicall.json';
@@ -9,7 +10,7 @@ import swapAbi from '../../constants/abis/tripool_swap.json';
 
 import { getFactoryRegistry, getMultiCall } from '../../utils/getters';
 
-const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`);
+const web3 = new Web3(WEB3_CONSTANTS.RPC_URL);
 
 export default fn(async () => {
 
@@ -530,6 +531,17 @@ export default fn(async () => {
         type: 'crypto',
         side_chain: true
       },
+      "avalanche-factory-v2-30": {
+        swap: '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
+        swap_token: '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
+        name: 'avalanche-factory-v2-30',
+        sideSwap: '0x3a43A5851A3e3E0e25A3c1089670269786be1577', // Swap on the sidechain
+        sideGauge: '0xA4106e1206d313a86051c6B5bc475181a81Dbc0f', // Gauge on the sidechain
+        sideStreamer: '0xa465A135399Fc49bC0B51acD023Cde0aF160A53f', // Streamer on the sidechain
+        type: 'stable',
+        side_chain: true,
+        factory: true,
+      },
       "harmony-3pool": {
         swap: '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
         swap_token: '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
@@ -608,15 +620,115 @@ export default fn(async () => {
         type: 'stable',
         factory: true,
       },
+      "f-tbtc2": {
+        swap: '0xfa65aa60a9d45623c57d383fb4cf8fb8b854cc4d',
+        swap_token: '0xfa65aa60a9d45623c57d383fb4cf8fb8b854cc4d',
+        name: 'f-tbtc2',
+        gauge: '0x29284d30bcb70e86a6C3f84CbC4de0Ce16b0f1CA',
+        type: 'bitcoin',
+        factory: true,
+      },
+      "f-ageur": {
+        swap: '0xb9446c4ef5ebe66268da6700d26f96273de3d571',
+        swap_token: '0xb9446c4ef5ebe66268da6700d26f96273de3d571',
+        name: 'f-ageur',
+        gauge: '0x1E212e054d74ed136256fc5a5DDdB4867c6E003F',
+        type: 'tether-eurt',
+        factory: true,
+      },
+      "crveth": {
+        swap: '0x8301AE4fc9c624d1D396cbDAa1ed877821D7C511',
+        swap_token: '0xEd4064f376cB8d68F770FB1Ff088a3d0F3FF5c4d',
+        name: 'crveth',
+        gauge: '0x1cEBdB0856dd985fAe9b8fEa2262469360B8a3a6',
+        type: 'crypto',
+      },
+      rai: {
+        swap: '0x618788357D0EBd8A37e763ADab3bc575D54c2C7d',
+        swap_token: '0x6BA5b4e438FA0aAf7C1bD179285aF65d13bD3D90',
+        name: 'rai',
+        gauge: '0x66ec719045bBD62db5eBB11184c18237D3Cc2E62',
+        type: 'stable',
+      },
+      "cvxeth": {
+        swap: '0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4',
+        swap_token: '0x3A283D9c08E8b55966afb64C515f5143cf907611',
+        name: 'cvxeth',
+        gauge: '0x7E1444BA99dcdFfE8fBdb42C02F0005D14f13BE1',
+        type: 'crypto',
+      },
+      "xautusd": {
+        swap: '0xAdCFcf9894335dC340f6Cd182aFA45999F45Fc44',
+        swap_token: '0x8484673cA7BfF40F82B041916881aeA15ee84834',
+        name: 'xautusd',
+        gauge: '0x1B3E14157ED33F60668f2103bCd5Db39a1573E5B',
+        type: 'crypto',
+      },
+      "spelleth": {
+        swap: '0x98638FAcf9a3865cd033F36548713183f6996122',
+        swap_token: '0x8282BD15dcA2EA2bDf24163E8f2781B30C43A2ef',
+        name: 'spelleth',
+        gauge: '0x08380a4999Be1a958E2abbA07968d703C7A3027C',
+        type: 'crypto',
+      },
+      "teth": {
+        swap: '0x752eBeb79963cf0732E9c0fec72a49FD1DEfAEAC',
+        swap_token: '0xCb08717451aaE9EF950a2524E33B6DCaBA60147B',
+        name: 'teth',
+        gauge: '0x6070fBD4E608ee5391189E7205d70cc4A274c017',
+        type: 'crypto',
+      },
+      "f-fei": {
+        swap: '0x06cb22615BA53E60D67Bf6C341a0fD5E718E1655',
+        swap_token: '0x06cb22615BA53E60D67Bf6C341a0fD5E718E1655',
+        name: 'f-fei',
+        gauge: '0xdC69D4cB5b86388Fff0b51885677e258883534ae',
+        type: 'stable',
+        factory: true,
+      },
+      "f-fxseth": {
+        swap: '0x941Eb6F616114e4Ecaa85377945EA306002612FE',
+        swap_token: '0x90244F43D548a4f8dFecfAD91a193465B1fad6F7',
+        name: 'f-fxseth',
+        gauge: '0x009aCD89535DAbC270C93F9b39D3232105Fef453',
+        type: 'crypto',
+        factory: true,
+      },
+      "f-badgerwbtc": {
+        swap: '0x50f3752289e1456BfA505afd37B241bca23e685d',
+        swap_token: '0x137469B55D1f15651BA46A89D0588e97dD0B6562',
+        name: 'f-badgerwbtc',
+        gauge: '0x02246583870b36Be0fEf2819E1d3A771d6C07546',
+        type: 'crypto',
+        factory: true,
+      },
+      "f-yfieth": {
+        swap: '0xC26b89A667578ec7b3f11b2F98d6Fd15C07C54ba',
+        swap_token: '0x29059568bb40344487d62f7450e78b8e6c74e0e5',
+        name: 'f-yfieth',
+        gauge: '0x05255C5BD33672b9FEA4129C13274D1E6193312d',
+        type: 'crypto',
+        factory: true,
+      },
+      "f-ageuribeur": {
+        swap: '0xB37D6c07482Bc11cd28a1f11f1a6ad7b66Dec933',
+        swap_token: '0xB37D6c07482Bc11cd28a1f11f1a6ad7b66Dec933',
+        name: 'f-ageuribeur',
+        gauge: '0x38039dD47636154273b287F74C432Cac83Da97e2',
+        type: 'stable',
+        factory: true,
+      },
     }
 
     // get pool addresses
     let calls = [];
 
     Object.keys(gauges).forEach(function(key) {
-        calls.push([gaugeControllerAddress, gaugeController.methods.get_gauge_weight(gauges[key].gauge).encodeABI()]);
-        calls.push([gaugeControllerAddress, gaugeController.methods.gauge_types(gauges[key].gauge).encodeABI()]);
-        calls.push([gaugeControllerAddress, gaugeController.methods.gauge_relative_weight(gauges[key].gauge).encodeABI()]);
+      if (gauges[key].gauge) {
+          calls.push([gaugeControllerAddress, gaugeController.methods.get_gauge_weight(gauges[key].gauge).encodeABI()]);
+          calls.push([gaugeControllerAddress, gaugeController.methods.gauge_types(gauges[key].gauge).encodeABI()]);
+          calls.push([gaugeControllerAddress, gaugeController.methods.gauge_relative_weight(gauges[key].gauge).encodeABI()]);
+        }
     });
 
 
